@@ -1,0 +1,26 @@
+<launch>
+
+    <arg name="vehicle" default="dodo"/>
+    <arg name="play_bag" default="true"/>
+    <arg name="run_image_view" default="false"/>
+
+    <include file="$(find rgbd_to_velocity)/launch/rgbd_to_velocity.launch"/>
+<!--    <include file="$(find position_to_velocity)/launch/basic.launch"/>-->
+
+    <rosparam command="load" file="$(find demo_rgbd)/params/kiwi_camera.yaml" />
+
+    <group if="$(arg play_bag)">
+<!--        <arg name="bag_path" default="/home/turtlebot/2019-06-03/test_2019-06-03-16-26-01.bag"/>-->
+        <arg name="bag_path" default="/home/turtlebot/bags_demo_rgbd/test_2019-06-11-16-24-07.bag"/>
+        <node pkg="rosbag" type="play" name="player" output="screen" args="--clock  $(arg bag_path)"/>
+    </group>
+
+    <include file="$(find demo_rgbd)/launch/demo_rgbd.launch"/>
+
+    <node if="$(arg run_image_view)" name="image_view" pkg="image_view" type="image_view" output="screen">
+        <remap from="image" to="camera/rgb/image_raw" />
+    </node>
+
+
+
+</launch>

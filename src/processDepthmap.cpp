@@ -231,7 +231,7 @@ void syncCloudHandler(const sensor_msgs::Image::ConstPtr& syncCloud2)
   tempCloud3->clear();
   pcl::PointXYZI point;
   double halfDSRate = cloudDSRate / 2.0 - 0.5;
-  const float* syncCloud2Pointer = reinterpret_cast<const float*>(&syncCloud2->data[0]);
+  const char* syncCloud2Pointer = reinterpret_cast<const char*>(&syncCloud2->data[0]);
   for (double i = halfDSRate; i < imageHeight; i += cloudDSRate) {
     for (double j = halfDSRate; j < imageWidth; j += cloudDSRate) {
       int pixelCount = 0;
@@ -286,7 +286,7 @@ int main(int argc, char** argv)
   ros::Subscriber voDataSub = nh.subscribe<nav_msgs::Odometry> ("cam_to_init", 5, voDataHandler);
 
   ros::Subscriber syncCloudSub = nh.subscribe<sensor_msgs::Image>
-                                 ("/camera/depth_registered/image", 1, syncCloudHandler);
+                                 ("/camera/depth/image_rect_raw", 1, syncCloudHandler);
 
   ros::Publisher depthCloudPub = nh.advertise<sensor_msgs::PointCloud2> ("depth_cloud", 5);
   depthCloudPubPointer = &depthCloudPub;

@@ -168,7 +168,7 @@ void syncCloudHandler(const sensor_msgs::Image::ConstPtr& syncCloud2)
 
   tempCloud2->clear();
   pcl::PointXYZ point;
-  const float* syncCloud2Pointer = reinterpret_cast<const float*>(&syncCloud2->data[0]);
+  const char* syncCloud2Pointer = reinterpret_cast<const char*>(&syncCloud2->data[0]);
   for (int i = 0; i < imagePixelNum; i++) {
     float val = syncCloud2Pointer[i];
 
